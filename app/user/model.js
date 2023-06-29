@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { model, Schema } = mongoose;
-// const AutoIncrement = require("mongoose-sequence")(mongoose);
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 const bcrypt = require("bcrypt");
 
 const userSchema = Schema(
@@ -63,6 +63,6 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// userSchema.plugin(AutoIncrement, { inc_field: "customer_id" });
+userSchema.plugin(AutoIncrement, { inc_field: "customer_id" });
 
 module.exports = model("User", userSchema);

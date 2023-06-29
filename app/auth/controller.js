@@ -8,11 +8,12 @@ const { getToken } = require("../../utils/index.js");
 async function register(req, res, next) {
   try {
     const payload = req.body;
-    const getAllCustomerId = await User.find().select("customer_id");
-    const convertArrayCustomerId = getAllCustomerId.map((item) => item.customer_id);
 
-    const findMaxCustomerId = Math.max(...convertArrayCustomerId);
-    let user = await User.create({ ...payload, customer_id: findMaxCustomerId + 1 });
+    // const getAllCustomerId = await User.find().select("customer_id");
+    // const convertArrayCustomerId = getAllCustomerId.map((item) => item.customer_id);
+    // const findMaxCustomerId = Math.max(...convertArrayCustomerId);
+    // let user = await User.create({ ...payload, customer_id: findMaxCustomerId + 1 });
+    let user = await User.create(payload);
 
     return res.json(user);
   } catch (err) {
@@ -63,8 +64,12 @@ async function login(req, res, next) {
 
 async function logout(req, res, next) {
   let token = getToken(req);
-  
-  let user = await User.findOneAndUpdate({ token: { $in: [token] } }, { $pull: { token: token } }, { useFindAndModify: false });
+
+  let user = await User.findOneAndUpdate(
+    { token: { $in: [token] } },
+    { $pull: { token: token } },
+    { useFindAndModify: false }
+  );
 
   if (!token || !user) {
     return res.json({
