@@ -9,10 +9,6 @@ async function register(req, res, next) {
   try {
     const payload = req.body;
 
-    // const getAllCustomerId = await User.find().select("customer_id");
-    // const convertArrayCustomerId = getAllCustomerId.map((item) => item.customer_id);
-    // const findMaxCustomerId = Math.max(...convertArrayCustomerId);
-    // let user = await User.create({ ...payload, customer_id: findMaxCustomerId + 1 });
     let user = await User.create(payload);
 
     return res.json(user);
