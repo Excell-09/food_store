@@ -5,10 +5,16 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const { decodeToken } = require("./middlewares/middleware");
+
+// router
 const productRouter = require("./app/product/router");
 const categoryRouter = require("./app/category/router");
 const tagRouter = require("./app/tag/router");
 const authRouter = require("./app/auth/router");
+const deliveryAddressRouter = require("./app/deliveryAddress/router");
+const cartRouter = require("./app/cart/router");
+const orderRouter = require("./app/order/router");
+const invoiceRouter = require("./app/invoice/router");
 
 var app = express();
 
@@ -25,6 +31,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(decodeToken());
 
 app.use("/auth", authRouter);
+app.use("/api/invoice", invoiceRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/delivery-address", deliveryAddressRouter);
 app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/tag", tagRouter);
