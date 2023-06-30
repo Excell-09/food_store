@@ -29,6 +29,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(decodeToken());
 
+app.use("/static", express.static(path.join(__dirname, "public/images/products")));
+
 app.use("/auth", authRouter);
 app.use("/api/invoice", invoiceRouter);
 app.use("/api/order", orderRouter);
