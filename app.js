@@ -5,7 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const { decodeToken } = require("./middlewares/middleware");
-
 // router
 const productRouter = require("./app/product/router");
 const categoryRouter = require("./app/category/router");
