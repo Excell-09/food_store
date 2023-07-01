@@ -33,7 +33,7 @@ export default function Register() {
   const handleShowPassword = (e) => {
     setShowPassword(e.target.checked);
   };
-  const handleLogin = async (data) => {
+  const handleRegister = async (data) => {
     if (loading) setLoading(false);
     try {
       const response = await appAxios.post("/auth/register", data);
@@ -55,9 +55,9 @@ export default function Register() {
         <form
           className="m-auto w-full max-w-[500px] bg-white rounded-sm shadow-md p-3"
           autoComplete="off"
-          onSubmit={handleSubmit(handleLogin)}
+          onSubmit={handleSubmit(handleRegister)}
         >
-          <h3 className="text-center text-2xl font-bold">Login</h3>
+          <h3 className="text-center text-2xl font-bold">Register</h3>
           {message.message && (
             <Alert className="mt-3" message={message.message} type={message.type} showIcon closable />
           )}
