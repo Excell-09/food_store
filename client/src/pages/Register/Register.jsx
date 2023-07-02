@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import appAxios from "@/utils/AppAxios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   full_name: yup.string().required("username is required").min(3, "Your username is too short."),
@@ -15,6 +15,11 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/");
+  }, []);
+
   const form = useForm({
     defaultValues: {
       full_name: "",
@@ -35,6 +40,7 @@ export default function Register() {
   };
   const handleRegister = async (data) => {
     if (loading) setLoading(false);
+    setLoading(true);
     try {
       const response = await appAxios.post("/auth/register", data);
       if (response.data.error !== 1) {
@@ -89,7 +95,7 @@ export default function Register() {
             className="bg-blue-600 mt-3 me-auto block w-full"
             size={"large"}
           >
-            {loading ? "Loading..." : "Register"}
+            {loading ? "loading..." : "Register"}
           </Button>
           <p className="text-slate-400 text-center mt-3">
             Already Have an Account?{" "}

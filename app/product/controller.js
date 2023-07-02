@@ -160,7 +160,7 @@ async function update(req, res, next) {
 }
 
 async function index(req, res, next) {
-  const { skip = 0, limit = 0, q = "", category = "", tags = [] } = req.query;
+  const { skip = 0, limit = 10, q = "", category = "", tags = [] } = req.query;
 
   let criteria = {};
 
@@ -184,7 +184,12 @@ async function index(req, res, next) {
   }
 
   try {
-    let product = await Product.find(criteria).skip(Number(skip)).limit(Number(limit)).sort("-updatedAt").populate("category").populate("tags");
+    let product = await Product.find(criteria)
+      .skip(Number(skip))
+      .limit(Number(limit))
+      .sort("-updatedAt")
+      .populate("category")
+      .populate("tags");
     let count = await Product.find().countDocuments();
 
     return res.json({

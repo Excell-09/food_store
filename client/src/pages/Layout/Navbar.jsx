@@ -6,23 +6,32 @@ import UserAvatar from "./UserAvatar";
 import CartNavItem from "./CartNavItem";
 import Logo from "./Logo";
 import SearchNav from "./SearchNav";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/features/authentication/authSlice";
+import { setQuery } from "@/features/query/querySlice";
 
 export default function Navbar() {
-  const user = false;
+  const user = useSelector((state) => state.auth.user);
   const { Search } = Input;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [categories, setCategories] = React.useState([]);
   const [isOpenProfileMenu, setIsOpenProfileMenu] = React.useState(false);
+
   const [profileMenu] = React.useState(() => {
     if (user) {
       return [
         {
           label: "Profile",
           to: "/account",
+          handleClick: () => setIsOpenProfileMenu(false),
         },
         {
           label: "Logout",
-          to: "/",
+          handleClick: () => {
+            dispatch(logout());
+          },
+          to: window.location.pathname,
         },
       ];
     }
@@ -30,30 +39,38 @@ export default function Navbar() {
       {
         label: "Login",
         to: "/login",
+        handleClick: () => setIsOpenProfileMenu(false),
       },
       {
         label: "Register",
         to: "/register",
+        handleClick: () => setIsOpenProfileMenu(false),
       },
     ];
   });
 
+  console.log(categories);
+
   React.useEffect(() => {
     appAxios.get("/api/category").then(({ data }) =>
-      setCategories(() => {
+      setCategories((prevValue) => {
         const categories = data.map((category) => ({
           value: category.name,
           label: category.name,
         }));
-        return categories;
+        return [
+          {
+            value: "all",
+            label: "all",
+          },
+          ...categories,
+        ];
       })
     );
   }, []);
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => console.log(value);
+  const handleChange = (value) => dispatch(setQuery({ categories: value }));
+  const handleChangeSearch = (e) => dispatch(setQuery({ q: e.target.value }));
   const handleOpenMenuProfile = () => setIsOpenProfileMenu((value) => !value);
   const handleLink = (to) => () => navigate(to);
 
@@ -65,11 +82,12 @@ export default function Navbar() {
           <Select className="w-[120px]" defaultValue="Category" onChange={handleChange} options={categories} />
         </div>
 
-        <SearchNav Search={Search} onSearch={onSearch} />
+        <SearchNav Search={Search} onChange={handleChangeSearch} />
 
         <CartNavItem handleLink={handleLink} />
 
         <UserAvatar
+          username={user?.full_name}
           handleOpenMenuProfile={handleOpenMenuProfile}
           isOpenProfileMenu={isOpenProfileMenu}
           profileMenu={profileMenu}

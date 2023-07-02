@@ -14,6 +14,11 @@ const schema = yup.object().shape({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/");
+  }, []);
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -23,7 +28,6 @@ export default function Login() {
   });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
-  const navigate = useNavigate();
 
   const [message, setMessage] = React.useState({ type: "", message: "" });
   const [loading, setLoading] = React.useState(false);
@@ -32,13 +36,15 @@ export default function Login() {
   const handleShowPassword = (e) => {
     setShowPassword(e.target.checked);
   };
+
   const handleLogin = async (data) => {
     if (loading) setLoading(false);
+    setLoading(true);
     try {
       const response = await appAxios.post("/auth/login", data);
       if (response.data.error !== 1) {
         localStorage.setItem("token", response.data.token);
-        navigate("/");
+        window.location.replace(`${window.location.origin}`);
       } else {
         setMessage({ type: "error", message: response.data.message });
       }
@@ -83,7 +89,7 @@ export default function Login() {
             className="bg-blue-600 mt-3 me-auto block w-full"
             size={"large"}
           >
-            {loading ? "Loading..." : "Login"}
+            {loading ? "loading..." : "Login"}
           </Button>
           <p className="text-slate-400 text-center mt-3">
             Do Not Have An?{" "}

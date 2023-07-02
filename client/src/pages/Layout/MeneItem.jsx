@@ -6,7 +6,7 @@ export default function MenuItem({ item }) {
   return (
     <>
       {item.map((item, i) => (
-        <Link key={i} to={item.to} className="w-full">
+        <Link key={i} to={item.to} className="w-full" onClick={item?.handleClick}>
           <Button className="w-full text-capitalize" type="text">
             {item.label}
           </Button>

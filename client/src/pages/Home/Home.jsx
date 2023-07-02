@@ -1,19 +1,22 @@
 import appAxios from "@/utils/AppAxios";
-import { Tag } from "antd";
+import { Pagination, Tag } from "antd";
 import React from "react";
 import TagsHome from "./TagsHome";
 import Container from "@/components/Container";
 import { CardSkeleton } from "./Cards";
+import { useSelector } from "react-redux";
 const Cards = React.lazy(() => import("./Cards"));
 
 export default function Home() {
   const [tags, setTags] = React.useState([]);
+  const query = useSelector((state) => state.query);
   const [products, setProducts] = React.useState([]);
   const [selectedTags, setSelectedTags] = React.useState([]);
+  const [totalPage, setTotalPage] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   const handleChange = (tag, checked) => {
     const nextSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
     setSelectedTags(nextSelectedTags);
   };
   const { CheckableTag } = Tag;
@@ -28,8 +31,13 @@ export default function Home() {
   }, []);
 
   React.useEffect(() => {
-    appAxios.get(`/api/product?tags=${selectedTags}`).then(({ data }) => setProducts(data.data));
-  }, [selectedTags]);
+    appAxios
+      .get(`/api/product?tags=${selectedTags}&category=${query.categories}&q=${query.q}&skip=${(currentPage - 1) * 10}`)
+      .then(({ data }) => {
+        setProducts(data.data);
+        setTotalPage(data.count);
+      });
+  }, [selectedTags, query, currentPage]);
 
   return (
     <Container>
@@ -40,6 +48,14 @@ export default function Home() {
           <Cards products={products} />
         </React.Suspense>
       </div>
+      <Pagination
+        className="mt-5"
+        current={currentPage}
+        total={totalPage}
+        defaultPageSize={10}
+        onChange={(value) => setCurrentPage(value)}
+      />
+      ;
     </Container>
   );
 }
