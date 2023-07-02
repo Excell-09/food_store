@@ -190,7 +190,7 @@ async function index(req, res, next) {
       .sort("-updatedAt")
       .populate("category")
       .populate("tags");
-    let count = await Product.find().countDocuments();
+    let count = await Product.find(criteria).sort("-updatedAt").populate("category").populate("tags").countDocuments();
 
     return res.json({
       data: product,
