@@ -11,6 +11,7 @@ import AccountLayout from "./pages/Account/AccountLayout";
 import Pemesanan from "./pages/Account/Pemesanan";
 import Alamat from "./pages/Account/Alamat";
 import currentToken from "./utils/getCurrentToken";
+import AddAlamat from "./pages/Account/AddAlamat";
 
 function App() {
   const router = createBrowserRouter([
@@ -55,6 +56,7 @@ function App() {
             { index: true, Component: Account },
             { path: "pemesanan", Component: Pemesanan },
             { path: "alamat", Component: Alamat },
+            { path: "add", Component: AddAlamat },
           ],
         },
       ],

@@ -7,9 +7,10 @@ const store = async (req, res, next) => {
     let payload = req.body;
     let user = req.user;
 
-    const deliveryAddress = await new DeliveryAddress({ ...payload, user: user._id });
+    const deliveryAddress = await DeliveryAddress.create({ ...payload, user: user._id });
     return res.json(deliveryAddress);
   } catch (err) {
+    console.log(err);
     if (err && err.name === "ValidationError") {
       return res.json({
         error: 1,
@@ -24,7 +25,10 @@ const index = async (req, res, next) => {
   try {
     let { skip = 0, limit = 10 } = req.query;
     let count = await DeliveryAddress.find({ user: req.user._id }).countDocuments();
-    let address = await DeliveryAddress.find({ user: req.user._id }).skip(Number(skip)).limit(Number(limit)).sort("-createdAt");
+    let address = await DeliveryAddress.find({ user: req.user._id })
+      .skip(Number(skip))
+      .limit(Number(limit))
+      .sort("-createdAt");
     return res.json({
       data: address,
       count,
