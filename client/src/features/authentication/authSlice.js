@@ -17,6 +17,7 @@ export const authSlice = createSlice({
         const response = await appAxiosToken.post("/auth/logout");
         if (response.data.error !== 1) {
           localStorage.removeItem("token");
+          localStorage.removeItem("cart");
           window.location.reload();
         }
       } catch (error) {
