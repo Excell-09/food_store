@@ -14,11 +14,6 @@ const schema = yup.object().shape({
 });
 
 export default function Login() {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (localStorage.getItem("token")) navigate("/");
-  }, []);
-
   const form = useForm({
     defaultValues: {
       email: "",

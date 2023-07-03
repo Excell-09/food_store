@@ -49,8 +49,6 @@ export default function Navbar() {
     ];
   });
 
-  console.log(categories);
-
   React.useEffect(() => {
     appAxios.get("/api/category").then(({ data }) =>
       setCategories((prevValue) => {

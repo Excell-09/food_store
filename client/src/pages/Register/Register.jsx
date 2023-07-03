@@ -15,11 +15,6 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (localStorage.getItem("token")) navigate("/");
-  }, []);
-
   const form = useForm({
     defaultValues: {
       full_name: "",
