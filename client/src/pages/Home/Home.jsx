@@ -36,6 +36,9 @@ export default function Home() {
       .then(({ data }) => {
         setProducts(data.data);
         setTotalPage(data.count);
+        if (data.count <= 10) {
+          setCurrentPage(1);
+        }
       });
   }, [selectedTags, query, currentPage]);
 

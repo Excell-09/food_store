@@ -5,19 +5,30 @@ import { BsFillCartPlusFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import appAxiosToken from "@/utils/AppAxiosToken";
 
 const { Meta } = Card;
 
 export default function Cards({ products }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const productsState = useSelector((state) => state.cart.products);
   const navigate = useNavigate();
-  console.log(user)
 
   const handleAddToCart = (product) => {
     if (!user) return navigate("/login");
     dispatch(addToCart(product));
   };
+
+
+  React.useEffect(() => {
+    const productsData = productsState.map((item) => ({
+      product: item,
+      qty: item.qty,
+    }));
+
+    appAxiosToken.put("/api/cart", { items: productsData }).then((res) => console.log(res));
+  }, [productsState]);
 
   return products.length === 0 ? (
     <h3 className="text-2xl col-span-3 text-center">Product Not Found!</h3>

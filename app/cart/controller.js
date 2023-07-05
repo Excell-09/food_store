@@ -6,11 +6,12 @@ const update = async (req, res, next) => {
     const { items } = req.body;
     const productsIds = items.map((item) => item.product._id);
     const products = await Product.find({ _id: { $in: productsIds } });
+    console.log(items);
     let cartitems = items.map((item) => {
       let relatedProduct = products.find((product) => product._id.toString() === item.product._id);
       return {
         product: relatedProduct._id,
-        price: relatedProduct.price,
+        price: relatedProduct.price * item.qty,
         image_url: relatedProduct.image_url,
         name: relatedProduct.name,
         user: req.user._id,
@@ -45,6 +46,7 @@ const update = async (req, res, next) => {
     next(err);
   }
 };
+
 const index = async (req, res, next) => {
   try {
     let items = await CartItem.find({ user: req.user._id }).populate("product");

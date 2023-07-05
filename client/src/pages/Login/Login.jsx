@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import appAxios from "@/utils/AppAxios";
 import { Link, useNavigate } from "react-router-dom";
+import appAxiosToken from "@/utils/AppAxiosToken";
 
 const schema = yup.object().shape({
   email: yup.string().email("email format is not valid!").required("email is required"),
@@ -39,6 +40,18 @@ export default function Login() {
       const response = await appAxios.post("/auth/login", data);
       if (response.data.error !== 1) {
         localStorage.setItem("token", response.data.token);
+        const { data } = await appAxiosToken("/api/cart");
+
+        const cart = {
+          products: data.map((item) => ({
+            ...item.product,
+            totalPrice: item.price,
+            qty: item.qty,
+          })),
+          totalItem: data.map((item) => item.qty).reduce((prev, curr) => prev + curr, 0),
+          totalPrice: data.map((item) => item.price).reduce((prev, curr) => prev + curr, 0),
+        };
+        localStorage.setItem("cart", JSON.stringify(cart));
         window.location.replace(`${window.location.origin}`);
       } else {
         setMessage({ type: "error", message: response.data.message });

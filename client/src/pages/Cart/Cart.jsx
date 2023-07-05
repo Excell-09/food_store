@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import IncrementDecrement from "./IncrementDecrement";
 import { decrementProduct, incrementProduct } from "@/features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import appAxiosToken from "@/utils/AppAxiosToken";
 
 export default function Cart() {
-  const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.auth.user);
+  const productsState = useSelector((state) => state.cart.products);
 
   const handleDecrement = (id) => {
     if (!user) return navigate("/");
@@ -19,6 +21,15 @@ export default function Cart() {
     if (!user) return navigate("/");
     dispatch(incrementProduct(id));
   };
+
+  React.useEffect(() => {
+    const productsData = productsState.map((item) => ({
+      product: item,
+      qty: item.qty,
+    }));
+
+    appAxiosToken.put("/api/cart", { items: productsData }).then((res) => console.log(res));
+  }, [productsState]);
 
   return (
     <Container>
