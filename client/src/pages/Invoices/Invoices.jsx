@@ -52,7 +52,12 @@ export default function Invoices() {
 
               <div className="flex">
                 <h6 className="flex-1">Payment to</h6>
-                <h6 className="flex-1">{invoice.payment_status}</h6>
+                <div className="flex-1">
+                  <h6 className="font-semibold capitalize">Food Store</h6>
+                  <p>foodstore@gmail.com</p>
+                  <p>BCA</p>
+                  <p>xxxx-xxxx-3939</p>
+                </div>
               </div>
             </div>
           ) : (

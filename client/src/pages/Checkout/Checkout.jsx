@@ -4,7 +4,7 @@ import { clearProducts } from "@/features/cart/cartSlice";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { Button } from "antd";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Addresses = React.lazy(() => import("./Addresses"));
 const Orders = React.lazy(() => import("./Orders"));
@@ -35,8 +35,9 @@ export default function Checkout() {
       });
 
       if (res.data.error !== 1) {
-        dispatch(clearProducts());
         localStorage.removeItem("cart");
+        dispatch(clearProducts());
+        await appAxiosToken.put("/api/cart", { items: [] });
         navigate("/invoices/" + res.data._id);
       }
       console.log(res);
