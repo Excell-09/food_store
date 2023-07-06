@@ -3,8 +3,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IncrementDecrement from "./IncrementDecrement";
 import { decrementProduct, incrementProduct } from "@/features/cart/cartSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import appAxiosToken from "@/utils/AppAxiosToken";
+import { Button } from "antd";
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -74,6 +75,11 @@ export default function Cart() {
             </>
           )}
         </div>
+        <Link to={"/checkout"}>
+          <Button className="bg-blue-700" type="primary" block>
+            Checkout
+          </Button>
+        </Link>
       </div>
     </Container>
   );

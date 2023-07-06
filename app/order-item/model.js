@@ -4,7 +4,7 @@ const { model, Schema } = mongoose;
 const orderItemSchema = Schema({
   name: {
     type: String,
-    minLength: [5, "panjang nama makanan minimal 50 karakter"],
+    minLength: [3, "panjang nama makanan minimal 3 karakter"],
     required: [true, "nama harus diisi"],
   },
   price: {

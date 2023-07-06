@@ -1,7 +1,67 @@
-import React from 'react'
+import Container from "@/components/Container";
+import Loading from "@/components/Loading";
+import appAxiosToken from "@/utils/AppAxiosToken";
+import { Button } from "antd";
+import React from "react";
+const Addresses = React.lazy(() => import("./Addresses"));
+const Orders = React.lazy(() => import("./Orders"));
 
 export default function Checkout() {
+  const deliveryCost = 20_000;
+  const [orders, setOrders] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [addresses, setAddresses] = React.useState([]);
+
+  let currentAddress = addresses[0]?._id;
+
+  React.useEffect(() => {
+    appAxiosToken("/api/delivery-address").then(({ data }) => setAddresses(data.data));
+    appAxiosToken("/api/cart").then(({ data }) => setOrders(data));
+  }, []);
+
+  const handleOrder = async () => {
+    if (loading) setLoading(false);
+    setLoading(true);
+
+    try {
+      const res = await appAxiosToken.post("/api/order", {
+        delivery_fee: deliveryCost,
+        delivery_address: currentAddress,
+      });
+      console.log(res);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div>Checkout</div>
-  )
+    <Container>
+      <div className="mt-5 border-2  border-slate-300">
+        <div className="bg-slate-200 text-slate-600 p-2 border-b-2 border-slate-300">Checkout</div>
+        <div className="p-3">
+          <div>
+            <h3 className="text-2xl">Pilih Alamat</h3>
+            <React.Suspense fallback={<Loading />}>
+              <Addresses
+                currentValue={currentAddress}
+                addresses={addresses}
+                onChange={(value) => (currentAddress = value)}
+              />
+            </React.Suspense>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-2xl">Konfimasi Pesanan</h3>
+            <React.Suspense fallback={<Loading />}>
+              <Orders items={orders} deliveryCost={deliveryCost} />
+            </React.Suspense>
+          </div>
+        </div>
+        <Button loading={loading} onClick={handleOrder} className="bg-blue-700" type="primary" block>
+          Bayar
+        </Button>
+      </div>
+    </Container>
+  );
 }
