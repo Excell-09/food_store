@@ -1,7 +1,65 @@
-import React from 'react'
+import Container from "@/components/Container";
+import appAxiosToken from "@/utils/AppAxiosToken";
+import React from "react";
+import { useParams } from "react-router-dom";
 
 export default function Invoices() {
+  const [invoice, setInvoice] = React.useState(null);
+  const { id } = useParams();
+  React.useEffect(() => {
+    appAxiosToken("/api/invoice/" + id).then((res) => setInvoice(res.data));
+  }, []);
   return (
-    <div>Invoices</div>
-  )
+    <Container>
+      <div className="mt-5 border-2  border-slate-300">
+        <div className="bg-slate-200 text-slate-600 p-2 border-b-2 border-slate-300">Invoices</div>
+        <div className="p-3">
+          {invoice !== null ? (
+            <div>
+              <h3 className="text-2xl mb-5">Invoice</h3>
+              <div className="flex">
+                <h6 className="flex-1">Status</h6>
+                <h6 className="flex-1">{invoice.payment_status}</h6>
+              </div>
+              <hr className="border-b-[1px] border-slate-300 my-2" />
+
+              <div className="flex">
+                <h6 className="flex-1">Order ID</h6>
+                <h6 className="flex-1">#{invoice.order.order_numbers}</h6>
+              </div>
+              <hr className="border-b-[1px] border-slate-300 my-2" />
+
+              <div className="flex">
+                <h6 className="flex-1">Total amount</h6>
+                <h6 className="flex-1">Rp {invoice.total.toLocaleString("idr")}</h6>
+              </div>
+              <hr className="border-b-[1px] border-slate-300 my-2" />
+
+              <div className="flex">
+                <h6 className="flex-1">Billed to</h6>
+                <div className="flex-1">
+                  <h6 className="font-semibold capitalize">{invoice.user.full_name}</h6>
+                  <p>{invoice.user.email}</p>
+                  <p>
+                    {`${invoice.order.delivery_address.provinsi},
+                     ${invoice.order.delivery_address.kecamatan}, 
+                     ${invoice.order.delivery_address.kelurahan}, 
+                     ${invoice.order.delivery_address.kelurahan}`}
+                  </p>
+                </div>
+              </div>
+              <hr className="border-b-[1px] border-slate-300 my-2" />
+
+              <div className="flex">
+                <h6 className="flex-1">Payment to</h6>
+                <h6 className="flex-1">{invoice.payment_status}</h6>
+              </div>
+            </div>
+          ) : (
+            <h3>You don't have invoice!</h3>
+          )}
+        </div>
+      </div>
+    </Container>
+  );
 }

@@ -1,8 +1,11 @@
 import Container from "@/components/Container";
 import Loading from "@/components/Loading";
+import { clearProducts } from "@/features/cart/cartSlice";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { Button } from "antd";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Addresses = React.lazy(() => import("./Addresses"));
 const Orders = React.lazy(() => import("./Orders"));
 
@@ -12,6 +15,8 @@ export default function Checkout() {
   const [loading, setLoading] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   let currentAddress = addresses[0]?._id;
 
   React.useEffect(() => {
@@ -28,6 +33,12 @@ export default function Checkout() {
         delivery_fee: deliveryCost,
         delivery_address: currentAddress,
       });
+
+      if (res.data.error !== 1) {
+        dispatch(clearProducts());
+        localStorage.removeItem("cart");
+        navigate("/invoices/" + res.data._id);
+      }
       console.log(res);
     } catch (error) {
     } finally {

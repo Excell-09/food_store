@@ -29,7 +29,7 @@ const invoiceSchema = Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
     order: {
       type: Schema.Types.ObjectId,

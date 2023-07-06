@@ -61,9 +61,14 @@ export const authSlice = createSlice({
       localStorage.removeItem("cart");
       localStorage.setItem("cart", JSON.stringify(state));
     },
+    clearProducts: (state) => {
+      state.products = [];
+      state.totalItem = 0;
+      state.totalPrice = 0;
+    },
   },
 });
 
-export const { addToCart, incrementProduct, decrementProduct } = authSlice.actions;
+export const { addToCart, incrementProduct, decrementProduct, clearProducts } = authSlice.actions;
 
 export default authSlice.reducer;

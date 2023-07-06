@@ -22,7 +22,7 @@ function App() {
         { index: true, Component: Home },
         { path: "cart", Component: Cart },
         { path: "checkout", Component: Checkout },
-        { path: "invoices", Component: Invoices },
+        { path: "invoices/:id", Component: Invoices },
         {
           path: "login",
           Component: Login,
