@@ -11,7 +11,7 @@ export default function Invoices({ data }) {
       <HeadTable row={["Order ID", "Total", "Status"]} />
       <Hr />
       {data.map((item) => (
-        <InvoiceItem items={item} />
+        <InvoiceItem key={item._id} items={item} />
       ))}
     </div>
   );

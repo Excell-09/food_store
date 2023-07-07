@@ -4,14 +4,14 @@ import { clearProducts } from "@/features/cart/cartSlice";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { Button } from "antd";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Addresses = React.lazy(() => import("./Addresses"));
 const Orders = React.lazy(() => import("./Orders"));
 
 export default function Checkout() {
   const deliveryCost = 20_000;
-  const [orders, setOrders] = React.useState([]);
+  const [carts, setCarts] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
 
@@ -21,11 +21,13 @@ export default function Checkout() {
 
   React.useEffect(() => {
     appAxiosToken("/api/delivery-address").then(({ data }) => setAddresses(data.data));
-    appAxiosToken("/api/cart").then(({ data }) => setOrders(data));
+    appAxiosToken("/api/cart").then(({ data }) => setCarts(data));
   }, []);
 
+  console.log(carts);
+
   const handleOrder = async () => {
-    if (orders.length === 0) {
+    if (carts.length === 0) {
       navigate("/");
       return;
     }
@@ -71,7 +73,7 @@ export default function Checkout() {
           <div className="mt-8">
             <h3 className="text-2xl">Konfimasi Pesanan</h3>
             <React.Suspense fallback={<Loading />}>
-              <Orders items={orders} deliveryCost={deliveryCost} />
+              <Orders items={carts} deliveryCost={deliveryCost} />
             </React.Suspense>
           </div>
         </div>

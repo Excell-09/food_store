@@ -47,9 +47,11 @@ export default function Cards({ products }) {
           ]}
         >
           <Meta title={item.name} description={item.description} />
-          <Tag color="#108ee9" className="mt-3">
-            # {item.tags.name}
-          </Tag>
+          {item.tags.map((tag) => (
+            <Tag key={tag._id} color="#108ee9" className="mt-3">
+              # {tag.name}
+            </Tag>
+          ))}
           <p className="font-semibold mt-2">Rp {item.price.toLocaleString("idr")}</p>
         </Card>
       </React.Fragment>

@@ -19,7 +19,7 @@ async function store(req, res, next) {
     }
 
     if (payload.tags && payload.tags.length > 0) {
-      let tags = await Tag.find({ name: { $in: payload.tags } });
+      let tags = await Tag.find({ name: { $in: payload.tags.split(",") } });
       if (tags && tags.length > 0) {
         payload = { ...payload, tags: tags.map((tag) => tag._id) };
       } else {
@@ -88,7 +88,7 @@ async function update(req, res, next) {
     }
 
     if (payload.tags && payload.tags.length > 0) {
-      let tags = await Tag.find({ name: { $in: payload.tags } });
+      let tags = await Tag.find({ name: { $in: payload.tags.split(",") } });
       if (tags && tags.length > 0) {
         payload = { ...payload, tags: tags.map((tag) => tag._id) };
       } else {
@@ -161,6 +161,7 @@ async function update(req, res, next) {
 
 async function index(req, res, next) {
   const { skip = 0, limit = 10, q = "", category = "", tags = [] } = req.query;
+  console.log(tags);
 
   let criteria = {};
 
@@ -177,7 +178,7 @@ async function index(req, res, next) {
   }
 
   if (tags.length > 0) {
-    let tagsResult = await Tag.find({ name: { $in: tags } });
+    let tagsResult = await Tag.find({ name: { $in: tags.split(",") } });
     if (tagsResult.length > 0) {
       criteria = { ...criteria, tags: { $in: tagsResult.map((tag) => tag._id) } };
     }

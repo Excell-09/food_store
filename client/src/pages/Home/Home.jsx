@@ -31,6 +31,7 @@ export default function Home() {
   }, []);
 
   React.useEffect(() => {
+    console.log(selectedTags);
     appAxios
       .get(`/api/product?tags=${selectedTags}&category=${query.categories}&q=${query.q}&skip=${(currentPage - 1) * 10}`)
       .then(({ data }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Select, Input } from "antd";
 import appAxios from "../../utils/AppAxios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UserAvatar from "./UserAvatar";
 import CartNavItem from "./CartNavItem";
 import Logo from "./Logo";
@@ -15,6 +15,7 @@ export default function Navbar() {
   const { Search } = Input;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [categories, setCategories] = React.useState([]);
   const [isOpenProfileMenu, setIsOpenProfileMenu] = React.useState(false);
 
@@ -31,7 +32,7 @@ export default function Navbar() {
           handleClick: () => {
             dispatch(logout());
           },
-          to: window.location.pathname,
+          to: location.pathname,
         },
       ];
     }

@@ -1,6 +1,5 @@
 const { subject } = require("@casl/ability");
 const Invoice = require("./model");
-const Order = require("../order/model");
 const { policyFor } = require("../../utils");
 
 const view = async (req, res) => {
@@ -35,7 +34,8 @@ const index = async (req, res) => {
         populate: {
           path: "order_items",
         },
-      });
+      })
+      .sort("-updatedAt");
     return res.json(invoices);
   } catch (err) {
     return res.json({
