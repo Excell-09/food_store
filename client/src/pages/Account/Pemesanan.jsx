@@ -12,12 +12,9 @@ export default function Pemesanan() {
 
   return (
     <div>
-      <div></div>
-      <div>
-        <React.Suspense fallback={<Loading center />}>
-          <Invoices data={invoices} />
-        </React.Suspense>
-      </div>
+      <React.Suspense fallback={<Loading center />}>
+        <Invoices data={invoices} />
+      </React.Suspense>
     </div>
   );
 }
