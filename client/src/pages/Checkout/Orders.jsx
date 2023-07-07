@@ -1,3 +1,4 @@
+import Hr from "@/components/Hr";
 import React from "react";
 
 export default function Orders({ items, deliveryCost }) {
@@ -10,12 +11,12 @@ export default function Orders({ items, deliveryCost }) {
         <h6 className="flex-1">Sub total</h6>
         <h6 className="flex-1">Rp {subTotal}</h6>
       </div>
-      <hr className="border-b-2 border-slate-300 my-2"/>
+      <Hr/>
       <div className="flex">
         <h6 className="flex-1">Ongkir</h6>
         <h6 className="flex-1">Rp {deliveryCost.toLocaleString("idr")}</h6>
       </div>
-      <hr className="border-b-2 border-slate-300 my-2"/>
+      <Hr/>
       <div className="flex">
         <h6 className="flex-1 font-semibold text-lg">Total</h6>
         <h6 className="flex-1 font-semibold text-lg">Rp {(subTotal + deliveryCost).toLocaleString("idr")}</h6>

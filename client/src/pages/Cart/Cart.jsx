@@ -6,6 +6,7 @@ import { decrementProduct, incrementProduct } from "@/features/cart/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { Button } from "antd";
+import Hr from "@/components/Hr";
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -23,18 +24,23 @@ export default function Cart() {
     dispatch(incrementProduct(id));
   };
 
+  const handleCheckout = () => {
+    if (productsState.length === 0) return;
+    navigate("/checkout");
+  };
+
   React.useEffect(() => {
     const productsData = productsState.map((item) => ({
       product: item,
       qty: item.qty,
     }));
 
-    appAxiosToken.put("/api/cart", { items: productsData }).then((res) => console.log(res));
+    appAxiosToken.put("/api/cart", { items: productsData }).then(() => console.log("Cart Updated"));
   }, [productsState]);
 
   return (
     <Container>
-      <div className="mt-5">
+      <div className="my-5">
         <div className="border-2 border-slate-300">
           <div className="bg-slate-200 text-slate-600 p-2 border-b-2 border-slate-300">Keranjang Belanja</div>
           <div className="p-5 text-2xl font-semibold ">Sub Total : Rp {cart.totalPrice.toLocaleString("idr")}</div>
@@ -51,7 +57,7 @@ export default function Cart() {
 
               {cart.products.map((item) => (
                 <React.Fragment key={item._id}>
-                  <hr className="border-b-2" />
+                  <Hr />
                   <div className="flex p-3">
                     <div className="flex-1">
                       <img
@@ -75,11 +81,15 @@ export default function Cart() {
             </>
           )}
         </div>
-        <Link to={"/checkout"}>
-          <Button className="bg-blue-700" type="primary" block>
-            Checkout
-          </Button>
-        </Link>
+        <Button
+          onClick={handleCheckout}
+          disabled={productsState.length === 0}
+          className="bg-blue-700"
+          type="primary"
+          block
+        >
+          Checkout
+        </Button>
       </div>
     </Container>
   );

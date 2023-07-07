@@ -21,8 +21,26 @@ function App() {
       children: [
         { index: true, Component: Home },
         { path: "cart", Component: Cart },
-        { path: "checkout", Component: Checkout },
-        { path: "invoices/:id", Component: Invoices },
+        {
+          path: "checkout",
+          Component: Checkout,
+          loader: () => {
+            if (!currentToken) {
+              return redirect("/");
+            }
+            return null;
+          },
+        },
+        {
+          path: "invoices/:id",
+          Component: Invoices,
+          loader: () => {
+            if (!currentToken) {
+              return redirect("/");
+            }
+            return null;
+          },
+        },
         {
           path: "login",
           Component: Login,

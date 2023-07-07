@@ -44,7 +44,7 @@ export default function Register() {
         setMessage({ type: "error", message: response.data.massage });
       }
     } catch (error) {
-      console.log(error);
+      setMessage({ type: "error", message: "something went wrong!" });
     } finally {
       setLoading(false);
     }

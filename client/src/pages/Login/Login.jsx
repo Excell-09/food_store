@@ -57,7 +57,7 @@ export default function Login() {
         setMessage({ type: "error", message: response.data.message });
       }
     } catch (error) {
-      console.log(error);
+      setMessage({ type: "error", message: "something went wrong!" });
     } finally {
       setLoading(false);
     }
@@ -75,8 +75,6 @@ export default function Login() {
           {message.message && (
             <Alert className="mt-3" message={message.message} type={message.type} showIcon closable />
           )}
-
-          <Divider />
 
           <InputText register={register("email")} label={"email"} type={"text"} errorMessage={errors.email?.message} />
           <InputText

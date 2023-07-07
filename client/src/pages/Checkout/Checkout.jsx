@@ -25,6 +25,11 @@ export default function Checkout() {
   }, []);
 
   const handleOrder = async () => {
+    if (orders.length === 0) {
+      navigate("/");
+      return;
+    }
+
     if (loading) setLoading(false);
     setLoading(true);
 
@@ -40,8 +45,8 @@ export default function Checkout() {
         await appAxiosToken.put("/api/cart", { items: [] });
         navigate("/invoices/" + res.data._id);
       }
-      console.log(res);
     } catch (error) {
+      navigate("/");
     } finally {
       setLoading(false);
     }

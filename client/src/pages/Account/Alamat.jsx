@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { Button, Pagination } from "antd";
 import React from "react";
@@ -17,7 +18,7 @@ export default function Alamat() {
   }, []);
 
   return (
-    <div className="">
+    <div>
       <div>
         <Link to={"/account/add"}>
           <Button type="primary" className="bg-blue-500">
@@ -26,7 +27,7 @@ export default function Alamat() {
         </Link>
       </div>
       <div className="mt-5">
-        <React.Suspense fallback={<h3 className="text-center">Loading...</h3>}>
+        <React.Suspense fallback={<Loading center />}>
           <Addresses
             addresses={addresses}
             currentPage={currentPage}

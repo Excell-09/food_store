@@ -1,8 +1,9 @@
 const { subject } = require("@casl/ability");
 const Invoice = require("./model");
+const Order = require("../order/model");
 const { policyFor } = require("../../utils");
 
-const index = async (req, res, next) => {
+const view = async (req, res) => {
   try {
     const { order_id } = req.params;
     let invoice = await Invoice.findOne({ order: order_id }).populate("order").populate("user");
@@ -24,6 +25,27 @@ const index = async (req, res, next) => {
   }
 };
 
+const index = async (req, res) => {
+  try {
+    let invoices = await Invoice.find({ user: req.user._id })
+      .populate("order")
+      .populate("user")
+      .populate({
+        path: "order",
+        populate: {
+          path: "order_items",
+        },
+      });
+    return res.json(invoices);
+  } catch (err) {
+    return res.json({
+      error: 1,
+      message: "Error when getting invoice!",
+    });
+  }
+};
+
 module.exports = {
   index,
+  view,
 };

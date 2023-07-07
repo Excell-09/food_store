@@ -20,14 +20,13 @@ export default function Cards({ products }) {
     dispatch(addToCart(product));
   };
 
-
   React.useEffect(() => {
     const productsData = productsState.map((item) => ({
       product: item,
       qty: item.qty,
     }));
 
-    appAxiosToken.put("/api/cart", { items: productsData }).then((res) => console.log(res));
+    appAxiosToken.put("/api/cart", { items: productsData }).then(() => console.log("Cart Updated"));
   }, [productsState]);
 
   return products.length === 0 ? (

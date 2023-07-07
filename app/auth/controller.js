@@ -20,7 +20,6 @@ async function register(req, res, next) {
         fields: err.errors,
       });
     }
-    console.log(err);
     next(err);
   }
 }
@@ -28,7 +27,6 @@ async function register(req, res, next) {
 async function localStrategy(email, password, done) {
   try {
     let user = await User.findOne({ email }).select("-__v -createdAt -updatedAt -cart_items -token");
-    console.log(user);
     if (!user) return done();
     if (bcrypt.compareSync(password, user.password)) {
       ({ password, ...userWithoutPassword } = user.toJSON());

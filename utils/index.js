@@ -22,6 +22,7 @@ const policies = {
     can("update", "DeliveryAddress", { user_id: user._id });
     can("delete", "DeliveryAddress", { user_id: user._id });
     can("read", "Invoice", { user_id: user._id });
+    can("view", "Invoice");
   },
   admin(user, { can }) {
     can("manage", "all");

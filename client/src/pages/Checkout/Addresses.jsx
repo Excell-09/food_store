@@ -1,3 +1,4 @@
+import Hr from "@/components/Hr";
 import { Button } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -42,7 +43,7 @@ export default function Addresses({ addresses, onChange }) {
                 className="flex-1"
               >{`${item.provinsi}, ${item.kecamatan}, ${item.kelurahan}, ${item.kelurahan}`}</label>
             </div>
-            <hr className="border-b-[1px] border-slate-300 my-2" />
+            <Hr widthThin />
           </React.Fragment>
         ))}
       </div>

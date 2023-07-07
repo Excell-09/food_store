@@ -85,7 +85,6 @@ export default function AddAlamat() {
       if (res.data.error !== 1) {
         navigate("/account/alamat");
       }
-      console.log(res);
     } catch (error) {
     } finally {
       setIsloading(false);
