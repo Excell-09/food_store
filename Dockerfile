@@ -13,8 +13,10 @@ ENV SECRET_KEY=sdkfsdf9iuj3erfds9i
 ENV DB_HOST=127.0.0.1
 ENV DB_PORT=27017
 ENV DB_USER=test
-ENV DB_PASS=rpW8C6gWz7pbhBTu
+ENV DB_PASS=""
 ENV DB_NAME=foodstore
+
+ENV FRONTEND_URL=http://localhost:5000
 
 ENV FRONTEND_URL="http://localhost:5000"
 
