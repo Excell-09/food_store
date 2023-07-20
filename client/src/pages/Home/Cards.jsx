@@ -9,7 +9,7 @@ import appAxiosToken from "@/utils/AppAxiosToken";
 
 const { Meta } = Card;
 
-export default function Cards({ products }) {
+export default function Cards({ products, loading }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const productsState = useSelector((state) => state.cart.products);
@@ -29,7 +29,9 @@ export default function Cards({ products }) {
     appAxiosToken.put("/api/cart", { items: productsData }).then(() => console.log("Cart Updated"));
   }, [productsState]);
 
-  return products.length === 0 ? (
+  return loading ? (
+    <CardSkeleton />
+  ) : products === null ? (
     <h3 className="text-2xl col-span-3 text-center">Product Not Found!</h3>
   ) : (
     products.map((item) => (

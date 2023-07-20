@@ -24,8 +24,6 @@ export default function Checkout() {
     appAxiosToken("/api/cart").then(({ data }) => setCarts(data));
   }, []);
 
-  console.log(carts);
-
   const handleOrder = async () => {
     if (carts.length === 0) {
       navigate("/");
