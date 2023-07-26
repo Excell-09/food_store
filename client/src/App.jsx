@@ -1,4 +1,9 @@
-import { RouterProvider, createBrowserRouter, redirect } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
 import Account from "./pages/Account/Account";
 import Cart from "./pages/Cart/Cart";
@@ -12,8 +17,30 @@ import Pemesanan from "./pages/Account/Pemesanan";
 import Alamat from "./pages/Account/Alamat";
 import currentToken from "./utils/getCurrentToken";
 import AddAlamat from "./pages/Account/AddAlamat";
+import LayoutAdmin from "./pages/admin/LayoutAdmin";
+import { useSelector } from "react-redux";
+import GetCategory from "./pages/admin/Category/GetCategory";
+import GetProduct from "./pages/admin/Product/GetProduct";
+import GetInvoice from "./pages/admin/Invoice/GetInvoice";
+import GetTags from "./pages/admin/Tag/GetTags";
+import LayoutCategory from "./pages/admin/Category/LayoutCategory";
+import LayoutInvoice from "./pages/admin/Invoice/LayoutInvoice";
+import UpdateInvoice from "./pages/admin/Invoice/UpdateInvoice";
+import LayoutProduct from "./pages/admin/Product/LayoutProduct";
+import LayoutTag from "./pages/admin/Tag/LayoutTag";
+import AddProduct from "./pages/admin/Product/AddProduct";
+import DeleteProduct from "./pages/admin/Product/DeleteProduct";
+import UpdateProduct from "./pages/admin/Product/UpdateProduct";
+import AddCategory from "./pages/admin/Category/AddCategory";
+import UpdateCategory from "./pages/admin/Category/UpdateCategory";
+import DeleteCategory from "./pages/admin/Category/DeleteCategory";
+import AddTag from "./pages/admin/Tag/AddTag";
+import UpdateTag from "./pages/admin/Tag/UpdateTag";
+import DeleteTag from "./pages/admin/Tag/DeleteTag";
 
 function App() {
+  const user = useSelector((state) => state.auth.user);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -79,26 +106,65 @@ function App() {
         },
       ],
     },
+    // admin site
+
+    {
+      path: "/admin",
+      Component: LayoutAdmin,
+      loader: () => {
+        if (!currentToken || user.role !== "admin") {
+          return redirect("/");
+        }
+        return null;
+      },
+      children: [
+        {
+          index: true,
+          element: <Navigate replace to={"/admin/product"} />,
+        },
+        {
+          path: "product",
+          Component: LayoutProduct,
+          children: [
+            { index: true, Component: GetProduct },
+            { path: "add", Component: AddProduct },
+            { path: "delete", Component: DeleteProduct },
+            { path: "update", Component: UpdateProduct },
+          ],
+        },
+        {
+          path: "invoice",
+          Component: LayoutInvoice,
+          // children: [
+          //   { index: true, Component: GetInvoice },
+          //   { path: "update", Component: UpdateInvoice },
+          // ],
+        },
+        {
+          path: "category",
+          Component: LayoutCategory,
+          // children: [
+          //   { index: true, Component: GetCategory },
+          //   { path: "add", Component: AddCategory },
+          //   { path: "update", Component: UpdateCategory },
+          //   { path: "delete", Component: DeleteCategory },
+          // ],
+        },
+        {
+          path: "tag",
+          Component: LayoutTag,
+          // children: [
+          //   { index: true, Component: GetTags },
+          //   { path: "add", Component: AddTag },
+          //   { path: "update", Component: UpdateTag },
+          //   { path: "delete", Component: DeleteTag },
+          // ],
+        },
+      ],
+    },
   ]);
+
   return <RouterProvider router={router} />;
 }
 
 export default App;
-
-// <BrowserRouter>
-//   <Routes>
-//     <Route path="/" element={<Layout />}>
-//       <Route index element={<Home />} />
-//       <Route path="account" element={<AccountLayout />}>
-//         <Route index element={<Account />} />
-//         <Route path="pemesanan" element={<Pemesanan />} />
-//         <Route path="alamat" element={<Alamat />} />
-//       </Route>
-//       <Route path="cart" element={<Cart />} />
-//       <Route path="checkout" element={<Checkout />} />
-//       <Route path="invoices" element={<Invoices />} />
-//       <Route path="login" element={<Login />} />
-//       <Route path="register" element={<Register />} />
-//     </Route>
-//   </Routes>
-// </BrowserRouter>
