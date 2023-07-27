@@ -135,30 +135,30 @@ function App() {
         {
           path: "invoice",
           Component: LayoutInvoice,
-          // children: [
-          //   { index: true, Component: GetInvoice },
-          //   { path: "update", Component: UpdateInvoice },
-          // ],
+          children: [
+            { index: true, Component: GetInvoice },
+            { path: "update", Component: UpdateInvoice },
+          ],
         },
         {
           path: "category",
           Component: LayoutCategory,
-          // children: [
-          //   { index: true, Component: GetCategory },
-          //   { path: "add", Component: AddCategory },
-          //   { path: "update", Component: UpdateCategory },
-          //   { path: "delete", Component: DeleteCategory },
-          // ],
+          children: [
+            { index: true, Component: GetCategory },
+            { path: "add", Component: AddCategory },
+            { path: "update", Component: UpdateCategory },
+            { path: "delete", Component: DeleteCategory },
+          ],
         },
         {
           path: "tag",
           Component: LayoutTag,
-          // children: [
-          //   { index: true, Component: GetTags },
-          //   { path: "add", Component: AddTag },
-          //   { path: "update", Component: UpdateTag },
-          //   { path: "delete", Component: DeleteTag },
-          // ],
+          children: [
+            { index: true, Component: GetTags },
+            { path: "add", Component: AddTag },
+            { path: "update", Component: UpdateTag },
+            { path: "delete", Component: DeleteTag },
+          ],
         },
       ],
     },
