@@ -1,17 +1,22 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TfiArrowCircleLeft } from "react-icons/tfi";
 
 export default function MenuAdmin({ label, items }) {
   const [active, setActive] = React.useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const handleActive = () => setActive((value) => !value);
+  const handleActive = (to) => {
+    setActive((value) => !value);
+    navigate(to);
+  };
+
   return (
     <div className="relative my-3">
       <div
         className="flex justify-between hover:bg-slate-500 px-3 py-2"
-        onClick={handleActive}
+        onClick={() => handleActive(items[0].to)}
       >
         <Link to={items[0].to} className="text-xl font-medium">
           <h6>{label}</h6>

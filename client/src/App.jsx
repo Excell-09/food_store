@@ -20,7 +20,6 @@ import AddAlamat from "./pages/Account/AddAlamat";
 import LayoutAdmin from "./pages/admin/LayoutAdmin";
 import { useSelector } from "react-redux";
 import GetCategory from "./pages/admin/Category/GetCategory";
-import GetProduct from "./pages/admin/Product/GetProduct";
 import GetInvoice from "./pages/admin/Invoice/GetInvoice";
 import GetTags from "./pages/admin/Tag/GetTags";
 import LayoutCategory from "./pages/admin/Category/LayoutCategory";
@@ -29,14 +28,11 @@ import UpdateInvoice from "./pages/admin/Invoice/UpdateInvoice";
 import LayoutProduct from "./pages/admin/Product/LayoutProduct";
 import LayoutTag from "./pages/admin/Tag/LayoutTag";
 import AddProduct from "./pages/admin/Product/AddProduct";
-import DeleteProduct from "./pages/admin/Product/DeleteProduct";
 import UpdateProduct from "./pages/admin/Product/UpdateProduct";
 import AddCategory from "./pages/admin/Category/AddCategory";
 import UpdateCategory from "./pages/admin/Category/UpdateCategory";
-import DeleteCategory from "./pages/admin/Category/DeleteCategory";
 import AddTag from "./pages/admin/Tag/AddTag";
 import UpdateTag from "./pages/admin/Tag/UpdateTag";
-import DeleteTag from "./pages/admin/Tag/DeleteTag";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -126,10 +122,12 @@ function App() {
           path: "product",
           Component: LayoutProduct,
           children: [
-            { index: true, Component: GetProduct },
+            {
+              index: true,
+              element: <Navigate replace to={"/admin/product/add"} />,
+            },
             { path: "add", Component: AddProduct },
-            { path: "delete", Component: DeleteProduct },
-            { path: "update", Component: UpdateProduct },
+            { path: "update:/id", Component: UpdateProduct },
           ],
         },
         {
@@ -146,8 +144,7 @@ function App() {
           children: [
             { index: true, Component: GetCategory },
             { path: "add", Component: AddCategory },
-            { path: "update", Component: UpdateCategory },
-            { path: "delete", Component: DeleteCategory },
+            { path: "update/:id", Component: UpdateCategory },
           ],
         },
         {
@@ -156,8 +153,7 @@ function App() {
           children: [
             { index: true, Component: GetTags },
             { path: "add", Component: AddTag },
-            { path: "update", Component: UpdateTag },
-            { path: "delete", Component: DeleteTag },
+            { path: "update/:id", Component: UpdateTag },
           ],
         },
       ],

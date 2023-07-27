@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 export default function LayoutCategory() {
-  return (
-    <div>LayoutCategory</div>
-  )
+  return <Outlet />;
 }
