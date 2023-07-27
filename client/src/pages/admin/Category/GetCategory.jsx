@@ -1,16 +1,49 @@
 import Loading from "@/components/Loading";
 import appAxiosToken from "@/utils/AppAxiosToken";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function CategoryItem({ category }) {
+
+  const handleDelete = async (categoryId) => {
+    try {
+      const response = await appAxiosToken.delete(
+        "/api/category/" + categoryId
+      );
+      if (response.data.error === 1) {
+        throw new Error("something wong!");
+      }
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: () => queryClient.invalidateQueries(["getCategory"]),
+  });
+
   return (
     <div className="bg-white rounded-md font-medium p-5 shadow-md flex justify-between items-center">
-      <p>{category}</p>
+      <p>{category.name}</p>
       <div className="space-x-3">
-        <Button>Update</Button>
-        <Button type="primary" danger>
+        <Button
+          onClick={() => navigate("/admin/category/update/" + category._id)}
+        >
+          Update
+        </Button>
+        <Button
+          loading={mutation.isLoading}
+          onClick={() => mutation.mutate(category._id)}
+          type="primary"
+          danger
+        >
           Delete
         </Button>
       </div>
@@ -41,7 +74,7 @@ export default function GetCategory() {
       <h6 className="text-lg mb-3">Category List</h6>
       <div className="space-y-2">
         {categories.data.data.map((item) => (
-          <CategoryItem key={item._id} category={item.name} />
+          <CategoryItem key={item._id} category={item} />
         ))}
       </div>
     </section>

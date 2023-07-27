@@ -4,7 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
-const { decodeToken } = require("./middlewares/middleware");
+const {decodeToken} = require("./middlewares/middleware");
 // router
 const productRouter = require("./app/product/router");
 const categoryRouter = require("./app/category/router");
@@ -24,12 +24,15 @@ app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(decodeToken());
 
-app.use("/static", express.static(path.join(__dirname, "public/images/products")));
+app.use(
+    "/static",
+    express.static(path.join(__dirname, "public/images/products"))
+);
 
 app.use("/auth", authRouter);
 app.use("/api/invoice", invoiceRouter);
@@ -41,23 +44,23 @@ app.use("/api/category", categoryRouter);
 app.use("/api/tag", tagRouter);
 
 app.use("/", (req, res) => {
-  res.render("index", { title: "Food store service" });
+    res.render("index", {title: "Food store service"});
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
 });
 
 module.exports = app;
