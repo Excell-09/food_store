@@ -24,7 +24,6 @@ import GetInvoice from "./pages/admin/Invoice/GetInvoice";
 import GetTags from "./pages/admin/Tag/GetTags";
 import LayoutCategory from "./pages/admin/Category/LayoutCategory";
 import LayoutInvoice from "./pages/admin/Invoice/LayoutInvoice";
-import UpdateInvoice from "./pages/admin/Invoice/UpdateInvoice";
 import LayoutProduct from "./pages/admin/Product/LayoutProduct";
 import LayoutTag from "./pages/admin/Tag/LayoutTag";
 import AddProduct from "./pages/admin/Product/AddProduct";
@@ -133,10 +132,7 @@ function App() {
         {
           path: "invoice",
           Component: LayoutInvoice,
-          children: [
-            { index: true, Component: GetInvoice },
-            { path: "update", Component: UpdateInvoice },
-          ],
+          children: [{ index: true, Component: GetInvoice }],
         },
         {
           path: "category",

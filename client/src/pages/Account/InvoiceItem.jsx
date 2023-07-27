@@ -6,6 +6,11 @@ import Hr from "@/components/Hr";
 export default function InvoiceItem({ items }) {
   const [isOpenOrders, setIsOpenOrders] = React.useState(false);
 
+  const COLOR = {
+    waiting_payment: "text-red-500",
+    paid: "text-green-500",
+  };
+
   const handleOpenDropdown = () => setIsOpenOrders((value) => !value);
   return (
     <div key={items._id} className="relative overflow-hidden">
@@ -21,8 +26,12 @@ export default function InvoiceItem({ items }) {
           </span>
           <span className="flex-1">#{items.order.order_numbers}</span>
         </h6>
-        <h6 className="flex-1 max-sm:text-sm">Rp {items.total.toLocaleString("idr")}</h6>
-        <h6 className="flex-1 max-sm:text-sm text-red-600">{items.payment_status}</h6>
+        <h6 className="flex-1 max-sm:text-sm">
+          Rp {items.total.toLocaleString("idr")}
+        </h6>
+        <h6 className={`flex-1 max-sm:text-sm ${COLOR[items.payment_status]}`}>
+          {items.payment_status}
+        </h6>
       </div>
 
       <div
@@ -39,7 +48,9 @@ export default function InvoiceItem({ items }) {
               <div className="flex">
                 <h6 className="flex-1">{order.name}</h6>
                 <h6 className="flex-1">{order.qty}</h6>
-                <h6 className="flex-1">Rp {order.price.toLocaleString("idr")}</h6>
+                <h6 className="flex-1">
+                  Rp {order.price.toLocaleString("idr")}
+                </h6>
               </div>
               <Hr widthThin />
             </React.Fragment>

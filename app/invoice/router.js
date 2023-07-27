@@ -10,5 +10,6 @@ router.get(
     invoiceController.getAllInvoices
 );
 router.get("/:order_id", invoiceController.view);
+router.put("/:order_id", invoiceController.update);
 
 module.exports = router;

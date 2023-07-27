@@ -41,10 +41,6 @@ const MENUADMINITEMS = [
         label: "Invoice",
         to: "/admin/invoice",
       },
-      {
-        label: "update Invoice",
-        to: "/admin/invoice/update",
-      },
     ],
   },
 ];
