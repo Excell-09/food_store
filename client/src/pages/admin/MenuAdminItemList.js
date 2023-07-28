@@ -3,6 +3,10 @@ const MENUADMINITEMS = [
     label: "Product",
     navItems: [
       {
+        label: "Product",
+        to: "/admin/product",
+      },
+      {
         label: "Add Product",
         to: "/admin/product/add",
       },

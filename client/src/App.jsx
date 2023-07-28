@@ -32,6 +32,7 @@ import AddCategory from "./pages/admin/Category/AddCategory";
 import UpdateCategory from "./pages/admin/Category/UpdateCategory";
 import AddTag from "./pages/admin/Tag/AddTag";
 import UpdateTag from "./pages/admin/Tag/UpdateTag";
+import GetProduct from "./pages/admin/Product/GetProduct";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -123,7 +124,7 @@ function App() {
           children: [
             {
               index: true,
-              element: <Navigate replace to={"/admin/product/add"} />,
+              Component: GetProduct,
             },
             { path: "add", Component: AddProduct },
             { path: "update:/id", Component: UpdateProduct },
