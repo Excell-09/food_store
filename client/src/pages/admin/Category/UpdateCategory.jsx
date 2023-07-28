@@ -1,7 +1,7 @@
 import InputText from "@/components/Input/InputText";
 import appAxiosToken from "@/utils/AppAxiosToken";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Alert } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -17,58 +17,48 @@ const schema = yup.object().shape({
 
 export default function UpdateCategory() {
   const { register, handleSubmit, formState } = useForm({
-      resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
+  const { errors } = formState;
 
-  const param = useParams();
+  const { id } = useParams();
 
-  const handleGetCategory = async () => {
-    try {
-      const response = await appAxiosToken.get("/api/category/");
-      if (response.data.error === 1) {
-        throw new Error("something wong!");
+  const handleGetCategory = (data) =>
+    appAxiosToken("/api/category/").then((res) => {
+      if (res.data.error === 1) {
+        Promise.reject("Something wrong!");
       }
-      return response.data.find((value) => value._id === param.id);
-    } catch (error) {
-      return error;
-    }
-  };
+      return res.data.find((item) => item._id === data.queryKey[1]);
+    });
 
   const getCategory = useQuery({
-    queryKey: ["getCategories"],
+    queryKey: ["category", id],
     queryFn: handleGetCategory,
   });
 
   const [displayAlert, setDisplayAlert] = React.useState(false);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const updateCategory = async (data) => {
-    try {
-      const response = await appAxiosToken.put(
-        "/api/category/" + data._id,
-        data
-      );
+  const updateCategory = (data) =>
+    appAxiosToken.put("/api/category/" + data._id, data).then((response) => {
       if (response.data.error === 1) {
-        throw new Error("something wrong");
+        return Promise.reject("something wrong");
       }
-      navigate("/admin/category");
-    } catch (error) {
-      return error;
-    } finally {
-      setDisplayAlert(true);
-    }
-  };
+    });
 
-  const { errors } = formState;
   const mutation = useMutation({
     mutationFn: updateCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["category"], { exact: true });
+      navigate("/admin/category");
+    },
   });
 
   const handleUpdateCategory = async (data) => {
     setDisplayAlert(false);
     try {
       await mutation.mutateAsync({ ...getCategory.data, name: data.name });
-      navigate("/admin/category");
     } catch (error) {
       console.log(error);
     } finally {

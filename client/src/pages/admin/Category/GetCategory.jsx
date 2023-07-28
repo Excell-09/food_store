@@ -6,19 +6,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 function CategoryItem({ category }) {
-
-  const handleDelete = async (categoryId) => {
-    try {
-      const response = await appAxiosToken.delete(
-        "/api/category/" + categoryId
-      );
-      if (response.data.error === 1) {
-        throw new Error("something wong!");
+  const handleDelete = async (categoryId) =>
+    appAxiosToken.delete("/api/category/" + categoryId).then((res) => {
+      if (res.data.error === 1) {
+        Promise.reject("Something wrong");
       }
-    } catch (error) {
-      return error;
-    }
-  };
+    });
 
   const queryClient = useQueryClient();
 
@@ -26,7 +19,7 @@ function CategoryItem({ category }) {
 
   const mutation = useMutation({
     mutationFn: handleDelete,
-    onSuccess: () => queryClient.invalidateQueries(["getCategory"]),
+    onSuccess: () => queryClient.invalidateQueries(["category"]),
   });
 
   return (
@@ -34,7 +27,10 @@ function CategoryItem({ category }) {
       <p>{category.name}</p>
       <div className="space-x-3">
         <Button
-          onClick={() => navigate("/admin/category/update/" + category._id)}
+          onClick={() => {
+            queryClient.setQueryData(["category", category._id], category.name);
+            navigate("/admin/category/update/" + category._id);
+          }}
         >
           Update
         </Button>
@@ -53,7 +49,7 @@ function CategoryItem({ category }) {
 
 export default function GetCategory() {
   const categories = useQuery({
-    queryKey: ["getCategory"],
+    queryKey: ["category"],
     queryFn: async () => appAxiosToken("/api/category"),
   });
 

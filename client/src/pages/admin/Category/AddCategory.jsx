@@ -21,15 +21,10 @@ export default function AddCategory() {
   });
   const [displayAlert, setDisplayAlert] = React.useState(false);
 
-  const postCategory = async (data) => {
-    try {
-      const response = await appAxiosToken.post("/api/category", data);
-      if (response.data.error === 1) {
-        throw new Error("something wrong");
-      }
-    } catch (error) {
-      return error;
-    }
+  const postCategory = (data) => {
+    return appAxiosToken.post("/api/category", data).then((res) => {
+      if (res.data.error === 1) Promise.reject("Something wrong");
+    });
   };
 
   const { errors } = formState;
