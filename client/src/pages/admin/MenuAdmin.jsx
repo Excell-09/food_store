@@ -13,9 +13,11 @@ export default function MenuAdmin({ label, items }) {
   };
 
   return (
-    <div className="relative my-3">
+    <div className="relative">
       <div
-        className="flex justify-between hover:bg-slate-500 px-3 py-2"
+        className={`flex justify-between hover:bg-slate-500/40 p-3 ${
+          items.some((item) => item.to === location.pathname) && "bg-slate-500"
+        }`}
         onClick={() => handleActive(items[0].to)}
       >
         <Link to={items[0].to} className="text-xl font-medium">
@@ -25,19 +27,21 @@ export default function MenuAdmin({ label, items }) {
           size={30}
           className={`${
             active ? "-rotate-90" : "rotate-0"
-          } transition-all duration-500`}
+          } transition-all duration-300`}
         />
       </div>
       <div
         className={`flex flex-col overflow-hidden ${
           active ? "max-h-[500px] visible" : "max-h-0 invisible"
-        } transition-all duration-500 px-3`}
+        } transition-all duration-500`}
       >
         {items.map((item, i) => (
           <Link
             className={`${
-              item.to === location.pathname ? "text-white" : "text-slate-300"
-            } p-2 hover:bg-slate-500`}
+              item.to === location.pathname
+                ? "text-white bg-slate-600"
+                : "text-slate-300"
+            } p-2 hover:bg-slate-600 px-6`}
             key={i}
             to={item.to}
           >
